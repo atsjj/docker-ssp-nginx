@@ -88,6 +88,15 @@ RUN set -ex \
     echo '}'; \
   } | tee conf.d/default.conf \
   && { \
+    echo 'map $http_x_forwarded_proto $forwarded_https {'; \
+    echo '  default off;'; \
+    echo '  https on;'; \
+    echo '}'; \
+  } | tee conf.d/map-x-forwarded-proto.conf \
+  && { \
+    echo 'fastcgi_param  HTTPS              $forwarded_https if_not_empty;'; \
+  } | tee -a fastcgi_params \
+  && { \
     echo 'upstream fastcgi-server {'; \
     echo '  server ${SSP_HOST};'; \
     echo '}'; \
