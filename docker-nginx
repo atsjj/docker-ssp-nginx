@@ -1,0 +1,9 @@
+#!/bin/sh
+set -e
+
+basePath=/etc/nginx
+conf=fastcgi-server.conf
+
+envsubst < $basePath/$conf.template > $basePath/conf.d/$conf
+
+exec nginx -g 'daemon off;' "$@"
